@@ -3,9 +3,11 @@ package com.example.cocktail;
 import com.example.cocktail.domain.Cocktail;
 import com.example.cocktail.domain.CocktailIngredient;
 import com.example.cocktail.domain.Ingredient;
+import com.example.cocktail.dto.CocktailDTO;
 import com.example.cocktail.repository.CocktailIngredientRepository;
 import com.example.cocktail.repository.CocktailRepository;
 import com.example.cocktail.repository.IngredientRepository;
+import com.example.cocktail.service.CocktailService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,38 +16,41 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class CocktailTest {
 
     @Autowired
-    CocktailRepository cocktailRepository;
-
-    @Autowired
-    IngredientRepository ingredientRepository;
-
-    @Autowired
-    CocktailIngredientRepository cocktailIngredientRepository;
+    CocktailService cocktailService;
 
     @Test
     public void createCocktailsAndIngredients() {
-        Cocktail margarita = new Cocktail(11007L, "마가리따", "Margarita", "Cocktail glass",
-                "마가리따입니다", "alcoholic");
-        Cocktail apello = new Cocktail(15106L, "아펠로", "Apello", "Collins Glass",
-                "아펠로 입니다.", "alcoholic");
+        CocktailDTO margaritaDTO = new CocktailDTO(11007L, "마가리따", "Margarita",
+                "Alcoholic", "Cocktail glass", "마가리따에요.", "Tequila",
+                "Triple sec", "Lime juice", "Salt", null, null,
+                null, null, null, null, "1 1/2 oz", "1/2 oz",
+                "1 oz", null, null, null, null, null,null,
+                null, "https://commons.wikimedia.org/wiki/File:Klassiche_Margarita.jpg",
+                "Cocktailmarler");
 
-        cocktailRepository.save(margarita);
-        cocktailRepository.save(apello);
+        CocktailDTO thaiCoffeeDTO = new CocktailDTO(12782L, null, "Thai Coffee",
+                "Non alcoholic", "Highball glass","Place the coffee and spices in the " +
+                "filter cone of your coffee maker. Brew coffee as usual, let it cool. In a tall glass, dissolve 1 or 2 " +
+                "teaspoons of sugar in an ounce of the coffee (it's easier to dissolve than if you put it right over ice). " +
+                "Add 5-6 ice cubes and pour coffee to within about 1 inch of the top of the glass. " +
+                "Rest a spoon on top of the coffee and slowly pour whipping cream into the spoon. " +
+                "This will make the cream float on top of the coffee rather than dispersing into it right away.",
+                "Coffee", "Coriander", "Cardamom", "Sugar",
+                "Whipping cream", "Ice", null, null, null, null,
+                "6 tblsp ground", "1/4 tsp", "4-5 whole green", null, null,
+                null, null, null, null, null,
+                "https://www.thecocktaildb.com/images/media/drink/wquwxs1441247025.jpg", null);
 
-        Ingredient tequila = new Ingredient("테킬라", "Tequila", "테킬라 입니다.", null);
-        Ingredient tripleSec = new Ingredient("트리플섹", "Triple Sec", "설명", null);
-        Ingredient limeJuice = new Ingredient("라임 주스", "Lime Juice", "라임쥬스 입니다.", null);
+        CocktailDTO zorroDTO = new CocktailDTO(15328L, null, "Zorro", "Alcoholic",
+                "Coffee Mug", "add all and pour black coffee and add whipped cream on top",
+                "Sambuca", "Baileys irish cream", "White Creme de Menthe", "salt",
+                null, null, null, null, null, null,
+                "2 cl", "2 cl", "2 cl", null, null, null,
+                null,null, null, null,
+                "https://www.thecocktaildb.com/images/media/drink/kvvd4z1485621283.jpg", null);
 
-        ingredientRepository.save(tequila);
-        ingredientRepository.save(tripleSec);
-        ingredientRepository.save(limeJuice);
-
-        CocktailIngredient margaritaIngredient1 = new CocktailIngredient(margarita, tequila, "1 1/2 oz");
-        CocktailIngredient margaritaIngredient2 = new CocktailIngredient(margarita, tripleSec, "1/2 oz");
-        CocktailIngredient margaritaIngredient3 = new CocktailIngredient(margarita, limeJuice, "1 oz");
-
-        cocktailIngredientRepository.save(margaritaIngredient1);
-        cocktailIngredientRepository.save(margaritaIngredient2);
-        cocktailIngredientRepository.save(margaritaIngredient3);
+        cocktailService.save(margaritaDTO);
+        cocktailService.save(thaiCoffeeDTO);
+        cocktailService.save(zorroDTO);
     }
 }
