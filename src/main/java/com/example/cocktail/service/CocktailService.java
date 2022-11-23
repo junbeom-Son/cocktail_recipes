@@ -38,7 +38,6 @@ public class CocktailService {
     /**
      * CocktailDTO에서 데이터를 추출해 존재하지 않는 칵테일을 저장하는 메서드
      * @param cocktailDTO
-     * @return
      */
     private void saveCocktail(CocktailDTO cocktailDTO) {
         Cocktail cocktail = cocktailRepository.findById(cocktailDTO.getId()).orElse(null);
