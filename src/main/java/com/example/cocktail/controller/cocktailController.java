@@ -10,12 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @Slf4j
 @RestController
+@RequestMapping("/cocktail")
 public class cocktailController {
 
     @Autowired
@@ -23,13 +25,13 @@ public class cocktailController {
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
-    @PostMapping("/cocktail/save")
+    @PostMapping("/save")
     public String cocktailSave(@RequestBody CocktailDTO cocktailDTO) {
         cocktailService.save(cocktailDTO);
         return "cocktailSave";
     }
 
-    @PostMapping("/cocktail/save/multiple")
+    @PostMapping("/save/multiple")
     public String cocktailSaveMultiple(@RequestBody List<CocktailDTO> cocktailDTOs) {
         for (CocktailDTO cocktailDTO : cocktailDTOs) {
             cocktailService.save(cocktailDTO);
