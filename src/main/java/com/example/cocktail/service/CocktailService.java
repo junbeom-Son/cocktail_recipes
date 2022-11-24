@@ -120,6 +120,6 @@ public class CocktailService {
     }
 
     public Cocktail findCocktailById(Long id) {
-        return cocktailRepository.findCocktailById(id);
+        return cocktailRepository.findById(id).orElse(null);
     }
 }
