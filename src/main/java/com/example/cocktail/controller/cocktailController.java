@@ -29,11 +29,8 @@ public class cocktailController {
     }
 
     @PostMapping("/cocktail/save/multiple")
-    public String cocktailSaveMultiple(@RequestBody String messageBody) throws JsonProcessingException {
-        List<CocktailDTO> cocktailDTOs
-                = objectMapper.readValue(messageBody, new TypeReference<>() {});
+    public String cocktailSaveMultiple(@RequestBody List<CocktailDTO> cocktailDTOs) {
         for (CocktailDTO cocktailDTO : cocktailDTOs) {
-            log.info("id = " + cocktailDTO.getId());
             cocktailService.save(cocktailDTO);
         }
         return "cocktailSave";
