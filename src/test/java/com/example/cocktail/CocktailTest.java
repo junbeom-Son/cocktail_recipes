@@ -1,13 +1,9 @@
 package com.example.cocktail;
 
 import com.example.cocktail.domain.Cocktail;
-import com.example.cocktail.domain.CocktailIngredient;
-import com.example.cocktail.domain.Ingredient;
 import com.example.cocktail.dto.CocktailDTO;
-import com.example.cocktail.repository.CocktailIngredientRepository;
-import com.example.cocktail.repository.CocktailRepository;
-import com.example.cocktail.repository.IngredientRepository;
 import com.example.cocktail.service.CocktailService;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -52,5 +48,12 @@ public class CocktailTest {
         cocktailService.save(margaritaDTO);
         cocktailService.save(thaiCoffeeDTO);
         cocktailService.save(zorroDTO);
+    }
+
+    @Test
+    public void findIngredients() {
+        Long cocktailId = 12782L;
+        Cocktail cocktail = cocktailService.findCocktailById(cocktailId);
+        Assertions.assertThat(cocktail.getEngName()).isEqualTo("Thai Coffee");
     }
 }

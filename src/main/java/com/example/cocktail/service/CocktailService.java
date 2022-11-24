@@ -118,4 +118,8 @@ public class CocktailService {
             cocktailIngredientRepository.save(new CocktailIngredient(cocktail, ingredient, portion));
         }
     }
+
+    public Cocktail findCocktailById(Long id) {
+        return cocktailRepository.findCocktailById(id);
+    }
 }
