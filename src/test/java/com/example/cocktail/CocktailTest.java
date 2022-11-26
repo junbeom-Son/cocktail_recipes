@@ -1,18 +1,27 @@
 package com.example.cocktail;
 
 import com.example.cocktail.domain.Cocktail;
+import com.example.cocktail.domain.CocktailIngredient;
+import com.example.cocktail.domain.Ingredient;
 import com.example.cocktail.dto.CocktailDTO;
 import com.example.cocktail.service.CocktailService;
+import com.example.cocktail.service.IngredientService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Set;
 
 @SpringBootTest
 public class CocktailTest {
 
     @Autowired
     CocktailService cocktailService;
+
+    @Autowired
+    IngredientService ingredientService;
 
     @Test
     public void createCocktailsAndIngredients() {
@@ -50,10 +59,16 @@ public class CocktailTest {
         cocktailService.save(zorroDTO);
     }
 
+    @Transactional
     @Test
     public void findIngredients() {
         Long cocktailId = 12782L;
         Cocktail cocktail = cocktailService.findCocktailById(cocktailId);
         Assertions.assertThat(cocktail.getEngName()).isEqualTo("Thai Coffee");
+        Set<CocktailIngredient> cocktailIngredients = cocktail.getCocktailIngredients();
+        for (CocktailIngredient cocktailIngredient : cocktailIngredients) {
+            Ingredient ingredient = cocktailIngredient.getIngredient();
+            System.out.println(ingredient.getEngName());
+        }
     }
 }

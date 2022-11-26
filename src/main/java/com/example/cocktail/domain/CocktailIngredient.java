@@ -1,6 +1,7 @@
 package com.example.cocktail.domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
@@ -9,6 +10,7 @@ import java.util.Objects;
 @Entity
 @NoArgsConstructor
 @Table(name = "COCKTAIL_INGREDIENT")
+@Getter
 @org.hibernate.annotations.Immutable
 public class CocktailIngredient {
     @Embeddable
