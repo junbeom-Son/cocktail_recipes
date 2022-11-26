@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Map;
+
 @Service
 public class CocktailService {
 
@@ -53,16 +55,10 @@ public class CocktailService {
      * @param cocktailDTO
      */
     private void saveIngredients(CocktailDTO cocktailDTO) {
-        saveIngredient(cocktailDTO.getIngredient1());
-        saveIngredient(cocktailDTO.getIngredient2());
-        saveIngredient(cocktailDTO.getIngredient3());
-        saveIngredient(cocktailDTO.getIngredient4());
-        saveIngredient(cocktailDTO.getIngredient5());
-        saveIngredient(cocktailDTO.getIngredient6());
-        saveIngredient(cocktailDTO.getIngredient7());
-        saveIngredient(cocktailDTO.getIngredient8());
-        saveIngredient(cocktailDTO.getIngredient9());
-        saveIngredient(cocktailDTO.getIngredient10());
+        Map<String, String> ingredients = cocktailDTO.getIngredients();
+        for (String ingredient : ingredients.keySet()) {
+            saveIngredient(ingredient);
+        }
     }
 
     /**
@@ -88,16 +84,10 @@ public class CocktailService {
      */
     private void saveIngredientsPortion(CocktailDTO cocktailDTO) {
         Cocktail cocktail = cocktailRepository.findById(cocktailDTO.getId()).get();
-        saveIngredientPortion(cocktail, cocktailDTO.getIngredient1(), cocktailDTO.getMeasure1());
-        saveIngredientPortion(cocktail, cocktailDTO.getIngredient2(), cocktailDTO.getMeasure2());
-        saveIngredientPortion(cocktail, cocktailDTO.getIngredient3(), cocktailDTO.getMeasure3());
-        saveIngredientPortion(cocktail, cocktailDTO.getIngredient4(), cocktailDTO.getMeasure4());
-        saveIngredientPortion(cocktail, cocktailDTO.getIngredient5(), cocktailDTO.getMeasure5());
-        saveIngredientPortion(cocktail, cocktailDTO.getIngredient6(), cocktailDTO.getMeasure6());
-        saveIngredientPortion(cocktail, cocktailDTO.getIngredient7(), cocktailDTO.getMeasure7());
-        saveIngredientPortion(cocktail, cocktailDTO.getIngredient8(), cocktailDTO.getMeasure8());
-        saveIngredientPortion(cocktail, cocktailDTO.getIngredient9(), cocktailDTO.getMeasure9());
-        saveIngredientPortion(cocktail, cocktailDTO.getIngredient10(), cocktailDTO.getMeasure10());
+        Map<String, String> ingredients = cocktailDTO.getIngredients();
+        for (String ingredient : ingredients.keySet()) {
+            saveIngredientPortion(cocktail, ingredient, ingredients.get(ingredient));
+        }
     }
 
     /**
