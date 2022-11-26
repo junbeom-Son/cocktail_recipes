@@ -46,7 +46,8 @@ public class CocktailService {
         if (cocktail == null) {
             cocktailRepository.save(new Cocktail(cocktailDTO.getId(), cocktailDTO.getKorName(),
                     cocktailDTO.getEngName(), cocktailDTO.getGlass(),
-                    cocktailDTO.getCocktailDescription(), cocktailDTO.getAlcoholic()));
+                    cocktailDTO.getCocktailDescription(), cocktailDTO.getAlcoholic(),
+                    cocktailDTO.getImageSource(), cocktailDTO.getImageAttribution()));
         }
     }
 

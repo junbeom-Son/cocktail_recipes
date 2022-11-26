@@ -25,6 +25,8 @@ public class Cocktail {
     @Column(length = 2000)
     String cocktailDescription;
     String alcoholic;
+    String imageSource;
+    String imageAttribution;
     Boolean modified;
     @CreationTimestamp
     private LocalDateTime createdAt;
@@ -33,13 +35,16 @@ public class Cocktail {
     @OneToMany(mappedBy = "cocktail")
     private Set<CocktailIngredient> cocktailIngredients = new HashSet<>();
 
-    public Cocktail(Long id, String korName, String engName, String glass, String cocktailDescription, String alcoholic) {
+    public Cocktail(Long id, String korName, String engName, String glass, String cocktailDescription,
+                    String alcoholic, String imageSource, String imageAttribution) {
         this.id = id;
         this.korName = korName;
         this.engName = engName;
         this.glass = glass;
         this.cocktailDescription = cocktailDescription;
         this.alcoholic = alcoholic;
+        this.imageSource = imageSource;
+        this.imageAttribution = imageAttribution;
         this.modified = false;
     }
 }
