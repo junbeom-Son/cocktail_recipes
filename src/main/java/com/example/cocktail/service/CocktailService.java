@@ -127,6 +127,7 @@ public class CocktailService {
         return cocktailRepository.findById(id).orElse(null);
     }
 
+    @Transactional
     public List<CocktailDTO> findAllCocktailDTOs() {
         List<Cocktail> cocktails = cocktailRepository.findAll();
         List<CocktailDTO> cocktailDTOs = new ArrayList<>();
