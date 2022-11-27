@@ -6,12 +6,15 @@ import com.example.cocktail.domain.Ingredient;
 import com.example.cocktail.dto.CocktailDTO;
 import com.example.cocktail.service.CocktailService;
 import com.example.cocktail.service.IngredientService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Set;
 
 @SpringBootTest
@@ -69,6 +72,15 @@ public class CocktailTest {
         for (CocktailIngredient cocktailIngredient : cocktailIngredients) {
             Ingredient ingredient = cocktailIngredient.getIngredient();
             System.out.println(ingredient.getEngName());
+        }
+    }
+
+    @Test
+    public void findCocktailDTOsTest() throws JsonProcessingException {
+        List<CocktailDTO> cocktailDTOs = cocktailService.findAllCocktailDTOs();
+        ObjectMapper objectMapper = new ObjectMapper();
+        for (CocktailDTO cocktailDTO : cocktailDTOs) {
+            System.out.println(objectMapper.writeValueAsString(cocktailDTO));
         }
     }
 }
