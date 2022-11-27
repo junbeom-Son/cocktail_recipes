@@ -36,9 +36,8 @@ public class cocktailController {
         return "cocktailSave";
     }
 
-    @GetMapping("/")
-    public String getCocktailDTOs() {
-        List<CocktailDTO> cocktailDTOs = cocktailService.findAllCocktailDTOs();
-        return "ok";
+    @GetMapping
+    public List<CocktailDTO> getCocktailDTOs() {
+        return cocktailService.findAllCocktailDTOs();
     }
 }
