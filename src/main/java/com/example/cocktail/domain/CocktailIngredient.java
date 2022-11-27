@@ -60,7 +60,7 @@ public class CocktailIngredient {
             insertable = false, updatable = false
     )
     private Ingredient ingredient;
-    String portion;
+    String measure;
     Long ingredientNo;
 
     public CocktailIngredient(Cocktail cocktail, Ingredient ingredient, String portion, Long ingredientNo) {
@@ -68,7 +68,7 @@ public class CocktailIngredient {
         this.ingredient = ingredient;
         this.id.cocktailId = cocktail.getId();
         this.id.ingredientId = ingredient.getId();
-        this.portion = portion;
+        this.measure = portion;
         this.ingredientNo = ingredientNo;
     }
 }

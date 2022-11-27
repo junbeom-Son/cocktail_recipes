@@ -34,7 +34,7 @@ public class CocktailService {
     public void save(CocktailDTO cocktailDTO) {
         saveCocktail(cocktailDTO);
         saveIngredients(cocktailDTO);
-        saveIngredientsPortion(cocktailDTO);
+        saveIngredientsMeasure(cocktailDTO);
     }
 
     /**
@@ -89,18 +89,18 @@ public class CocktailService {
      * 각 재료별로 저장하기위해 각각의 재료를 가지고 저장한다.
      * @param cocktailDTO
      */
-    private void saveIngredientsPortion(CocktailDTO cocktailDTO) {
+    private void saveIngredientsMeasure(CocktailDTO cocktailDTO) {
         Cocktail cocktail = cocktailRepository.findById(cocktailDTO.getId()).get();
-        saveIngredientPortion(cocktail, cocktailDTO.getIngredient1(), cocktailDTO.getMeasure1(), 1L);
-        saveIngredientPortion(cocktail, cocktailDTO.getIngredient2(), cocktailDTO.getMeasure2(), 2L);
-        saveIngredientPortion(cocktail, cocktailDTO.getIngredient3(), cocktailDTO.getMeasure3(), 3L);
-        saveIngredientPortion(cocktail, cocktailDTO.getIngredient4(), cocktailDTO.getMeasure4(), 4L);
-        saveIngredientPortion(cocktail, cocktailDTO.getIngredient5(), cocktailDTO.getMeasure5(), 5L);
-        saveIngredientPortion(cocktail, cocktailDTO.getIngredient6(), cocktailDTO.getMeasure6(), 6L);
-        saveIngredientPortion(cocktail, cocktailDTO.getIngredient7(), cocktailDTO.getMeasure7(), 7L);
-        saveIngredientPortion(cocktail, cocktailDTO.getIngredient8(), cocktailDTO.getMeasure8(), 8L);
-        saveIngredientPortion(cocktail, cocktailDTO.getIngredient9(), cocktailDTO.getMeasure9(), 9L);
-        saveIngredientPortion(cocktail, cocktailDTO.getIngredient10(), cocktailDTO.getMeasure10(), 10L);
+        saveIngredientMeasure(cocktail, cocktailDTO.getIngredient1(), cocktailDTO.getMeasure1(), 1L);
+        saveIngredientMeasure(cocktail, cocktailDTO.getIngredient2(), cocktailDTO.getMeasure2(), 2L);
+        saveIngredientMeasure(cocktail, cocktailDTO.getIngredient3(), cocktailDTO.getMeasure3(), 3L);
+        saveIngredientMeasure(cocktail, cocktailDTO.getIngredient4(), cocktailDTO.getMeasure4(), 4L);
+        saveIngredientMeasure(cocktail, cocktailDTO.getIngredient5(), cocktailDTO.getMeasure5(), 5L);
+        saveIngredientMeasure(cocktail, cocktailDTO.getIngredient6(), cocktailDTO.getMeasure6(), 6L);
+        saveIngredientMeasure(cocktail, cocktailDTO.getIngredient7(), cocktailDTO.getMeasure7(), 7L);
+        saveIngredientMeasure(cocktail, cocktailDTO.getIngredient8(), cocktailDTO.getMeasure8(), 8L);
+        saveIngredientMeasure(cocktail, cocktailDTO.getIngredient9(), cocktailDTO.getMeasure9(), 9L);
+        saveIngredientMeasure(cocktail, cocktailDTO.getIngredient10(), cocktailDTO.getMeasure10(), 10L);
 
     }
 
@@ -109,9 +109,9 @@ public class CocktailService {
      * findByEngName 이 항상 null 을 return 하지 않음을 보장한다.
      * @param cocktail
      * @param ingredientEngName
-     * @param portion
+     * @param measure
      */
-    private void saveIngredientPortion(Cocktail cocktail, String ingredientEngName, String portion, Long ingredientNo) {
+    private void saveIngredientMeasure(Cocktail cocktail, String ingredientEngName, String measure, Long ingredientNo) {
         if (ingredientEngName == null) {
             return;
         }
@@ -119,7 +119,7 @@ public class CocktailService {
         CocktailIngredient cocktailIngredient = cocktailIngredientRepository
                 .findByCocktailAndIngredient(cocktail, ingredient);
         if (cocktailIngredient == null) {
-            cocktailIngredientRepository.save(new CocktailIngredient(cocktail, ingredient, portion, ingredientNo));
+            cocktailIngredientRepository.save(new CocktailIngredient(cocktail, ingredient, measure, ingredientNo));
         }
     }
 
@@ -167,7 +167,7 @@ public class CocktailService {
         Map<String, String> measures = new HashMap<>();
         Set<CocktailIngredient> cocktailIngredients = cocktail.getCocktailIngredients();
         for (CocktailIngredient cocktailIngredient : cocktailIngredients) {
-            measures.put(prefix + cocktailIngredient.getIngredientNo(), cocktailIngredient.getPortion());
+            measures.put(prefix + cocktailIngredient.getIngredientNo(), cocktailIngredient.getMeasure());
         }
         return measures;
     }
