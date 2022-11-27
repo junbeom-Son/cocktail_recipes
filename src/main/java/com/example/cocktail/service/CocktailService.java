@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.*;
+
 @Service
 public class CocktailService {
 
@@ -123,5 +125,49 @@ public class CocktailService {
 
     public Cocktail findCocktailById(Long id) {
         return cocktailRepository.findById(id).orElse(null);
+    }
+
+    public List<CocktailDTO> findAllCocktailDTOs() {
+        List<Cocktail> cocktails = cocktailRepository.findAll();
+        List<CocktailDTO> cocktailDTOs = new ArrayList<>();
+        for (Cocktail cocktail : cocktails) {
+            cocktailDTOs.add(createCocktailDTO(cocktail));
+        }
+        return cocktailDTOs;
+    }
+
+    private CocktailDTO createCocktailDTO(Cocktail cocktail) {
+        Map<String, String> ingredients = extractIngredients(cocktail);
+        Map<String, String> measures = extractMeasures(cocktail);
+        return new CocktailDTO(cocktail.getId(), cocktail.getKorName(), cocktail.getEngName(),
+                cocktail.getAlcoholic(), cocktail.getGlass(), cocktail.getCocktailDescription(),
+                ingredients.get("ingredient1"), ingredients.get("ingredient2"), ingredients.get("ingredient3"),
+                ingredients.get("ingredient4"), ingredients.get("ingredient5"), ingredients.get("ingredient6"),
+                ingredients.get("ingredient7"), ingredients.get("ingredient8"), ingredients.get("ingredient9"),
+                ingredients.get("ingredient10"), measures.get("measure1"), measures.get("measure2"),
+                measures.get("measure3"), measures.get("measure4"), measures.get("measure5"), measures.get("measure6"),
+                measures.get("measure7"), measures.get("measure8"), measures.get("measure9"),measures.get("measure10"),
+                cocktail.getImageSource(), cocktail.getImageAttribution());
+    }
+
+    private Map<String, String> extractIngredients(Cocktail cocktail) {
+        String prefix = "ingredient";
+        Map<String, String> ingredients = new HashMap<>();
+        Set<CocktailIngredient> cocktailIngredients = cocktail.getCocktailIngredients();
+        for (CocktailIngredient cocktailIngredient : cocktailIngredients) {
+            Ingredient ingredient = cocktailIngredient.getIngredient();
+            ingredients.put(prefix + cocktailIngredient.getIngredientNo(), ingredient.getEngName());
+        }
+        return ingredients;
+    }
+
+    private Map<String, String> extractMeasures(Cocktail cocktail) {
+        String prefix = "measure";
+        Map<String, String> measures = new HashMap<>();
+        Set<CocktailIngredient> cocktailIngredients = cocktail.getCocktailIngredients();
+        for (CocktailIngredient cocktailIngredient : cocktailIngredients) {
+            measures.put(prefix + cocktailIngredient.getIngredientNo(), cocktailIngredient.getPortion());
+        }
+        return measures;
     }
 }
