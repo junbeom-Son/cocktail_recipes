@@ -61,12 +61,14 @@ public class CocktailIngredient {
     )
     private Ingredient ingredient;
     String portion;
+    Long ingredientNo;
 
-    public CocktailIngredient(Cocktail cocktail, Ingredient ingredient, String portion) {
+    public CocktailIngredient(Cocktail cocktail, Ingredient ingredient, String portion, Long ingredientNo) {
         this.cocktail = cocktail;
         this.ingredient = ingredient;
         this.id.cocktailId = cocktail.getId();
         this.id.ingredientId = ingredient.getId();
         this.portion = portion;
+        this.ingredientNo = ingredientNo;
     }
 }

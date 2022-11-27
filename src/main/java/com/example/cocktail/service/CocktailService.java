@@ -11,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Map;
-
 @Service
 public class CocktailService {
 
@@ -56,10 +54,16 @@ public class CocktailService {
      * @param cocktailDTO
      */
     private void saveIngredients(CocktailDTO cocktailDTO) {
-        Map<String, String> ingredients = cocktailDTO.getIngredients();
-        for (String ingredient : ingredients.keySet()) {
-            saveIngredient(ingredient);
-        }
+        saveIngredient(cocktailDTO.getIngredient1());
+        saveIngredient(cocktailDTO.getIngredient2());
+        saveIngredient(cocktailDTO.getIngredient3());
+        saveIngredient(cocktailDTO.getIngredient4());
+        saveIngredient(cocktailDTO.getIngredient5());
+        saveIngredient(cocktailDTO.getIngredient6());
+        saveIngredient(cocktailDTO.getIngredient7());
+        saveIngredient(cocktailDTO.getIngredient8());
+        saveIngredient(cocktailDTO.getIngredient9());
+        saveIngredient(cocktailDTO.getIngredient10());
     }
 
     /**
@@ -85,10 +89,17 @@ public class CocktailService {
      */
     private void saveIngredientsPortion(CocktailDTO cocktailDTO) {
         Cocktail cocktail = cocktailRepository.findById(cocktailDTO.getId()).get();
-        Map<String, String> ingredients = cocktailDTO.getIngredients();
-        for (String ingredient : ingredients.keySet()) {
-            saveIngredientPortion(cocktail, ingredient, ingredients.get(ingredient));
-        }
+        saveIngredientPortion(cocktail, cocktailDTO.getIngredient1(), cocktailDTO.getMeasure1(), 1L);
+        saveIngredientPortion(cocktail, cocktailDTO.getIngredient2(), cocktailDTO.getMeasure2(), 2L);
+        saveIngredientPortion(cocktail, cocktailDTO.getIngredient3(), cocktailDTO.getMeasure3(), 3L);
+        saveIngredientPortion(cocktail, cocktailDTO.getIngredient4(), cocktailDTO.getMeasure4(), 4L);
+        saveIngredientPortion(cocktail, cocktailDTO.getIngredient5(), cocktailDTO.getMeasure5(), 5L);
+        saveIngredientPortion(cocktail, cocktailDTO.getIngredient6(), cocktailDTO.getMeasure6(), 6L);
+        saveIngredientPortion(cocktail, cocktailDTO.getIngredient7(), cocktailDTO.getMeasure7(), 7L);
+        saveIngredientPortion(cocktail, cocktailDTO.getIngredient8(), cocktailDTO.getMeasure8(), 8L);
+        saveIngredientPortion(cocktail, cocktailDTO.getIngredient9(), cocktailDTO.getMeasure9(), 9L);
+        saveIngredientPortion(cocktail, cocktailDTO.getIngredient10(), cocktailDTO.getMeasure10(), 10L);
+
     }
 
     /**
@@ -98,7 +109,7 @@ public class CocktailService {
      * @param ingredientEngName
      * @param portion
      */
-    private void saveIngredientPortion(Cocktail cocktail, String ingredientEngName, String portion) {
+    private void saveIngredientPortion(Cocktail cocktail, String ingredientEngName, String portion, Long ingredientNo) {
         if (ingredientEngName == null) {
             return;
         }
@@ -106,7 +117,7 @@ public class CocktailService {
         CocktailIngredient cocktailIngredient = cocktailIngredientRepository
                 .findByCocktailAndIngredient(cocktail, ingredient);
         if (cocktailIngredient == null) {
-            cocktailIngredientRepository.save(new CocktailIngredient(cocktail, ingredient, portion));
+            cocktailIngredientRepository.save(new CocktailIngredient(cocktail, ingredient, portion, ingredientNo));
         }
     }
 
