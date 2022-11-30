@@ -127,6 +127,14 @@ public class CocktailService {
         return cocktailRepository.findById(id).orElse(null);
     }
 
+    public CocktailDTO findCocktailDTOById(Long id) {
+        Cocktail cocktail = cocktailRepository.findById(id).orElse(null);
+        if (cocktail == null) {
+            return null;
+        }
+        return createCocktailDTO(cocktail);
+    }
+
     @Transactional
     public List<CocktailDTO> findAllCocktailDTOs() {
         List<Cocktail> cocktails = cocktailRepository.findAll();

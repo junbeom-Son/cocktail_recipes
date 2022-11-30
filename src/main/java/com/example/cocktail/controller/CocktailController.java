@@ -33,6 +33,11 @@ public class CocktailController {
         return "cocktailSave";
     }
 
+    @GetMapping("/{cocktailID}")
+    public CocktailDTO getCocktailById(@PathVariable Long cocktailID) {
+        return cocktailService.findCocktailDTOById(cocktailID);
+    }
+
     @GetMapping
     public List<CocktailDTO> getCocktailDTOs() {
         return cocktailService.findAllCocktailDTOs();
