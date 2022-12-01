@@ -177,7 +177,7 @@ public class CocktailService {
         Set<CocktailIngredient> cocktailIngredients = cocktail.getCocktailIngredients();
         for (CocktailIngredient cocktailIngredient : cocktailIngredients) {
             Ingredient ingredient = cocktailIngredient.getIngredient();
-            ingredients.put(prefix + cocktailIngredient.getIngredientNo(), ingredient.getEngName());
+            ingredients.put(prefix + cocktailIngredient.getId().getIngredientNo(), ingredient.getEngName());
         }
         return ingredients;
     }
@@ -187,7 +187,7 @@ public class CocktailService {
         Map<String, String> measures = new HashMap<>();
         Set<CocktailIngredient> cocktailIngredients = cocktail.getCocktailIngredients();
         for (CocktailIngredient cocktailIngredient : cocktailIngredients) {
-            measures.put(prefix + cocktailIngredient.getIngredientNo(), cocktailIngredient.getMeasure());
+            measures.put(prefix + cocktailIngredient.getId().getIngredientNo(), cocktailIngredient.getMeasure());
         }
         return measures;
     }
@@ -244,14 +244,32 @@ public class CocktailService {
         if (ingredientEngName == null) {
             return;
         }
-        Ingredient ingredient = ingredientRepository.findByEngName(ingredientEngName);
+        Ingredient tmp = ingredientRepository.findByEngName(ingredientEngName);
+        Ingredient ingredient = ingredientRepository.findById(tmp.getId()).get();
+        CocktailIngredient.Id id = new CocktailIngredient.Id(cocktail.getId(), ingredient.getId(), ingredientNo);
         CocktailIngredient cocktailIngredient = cocktailIngredientRepository
-                .findCocktailIngredientByIngredientNo(ingredientNo);
+                .findById(id).get();
         if (cocktailIngredient == null) {
+            System.out.println("null " + ingredientEngName);
             cocktailIngredientRepository.save(new CocktailIngredient(cocktail, ingredient, measure, ingredientNo));
         } else {
+            System.out.println("before measure edit : " + cocktailIngredient.getMeasure());
             cocktailIngredient.setIngredient(ingredient);
             cocktailIngredient.setMeasure(measure);
+            CocktailIngredient savedMeasure = cocktailIngredientRepository.saveAndFlush(cocktailIngredient);
+            System.out.println("after measure edit" +savedMeasure.getMeasure());
         }
     }
+
+    private void no(CocktailDTO cocktailDTO, String ingredientEngName, String measure, Long ingredientNo) {
+        Cocktail cocktail = cocktailRepository.findById(cocktailDTO.getId()).get();
+        Ingredient ingredient = ingredientRepository.findByEngName(ingredientEngName);
+        CocktailIngredient.Id id = new CocktailIngredient.Id(cocktail.getId(), ingredient.getId(), ingredientNo);
+        CocktailIngredient cocktailIngredient = cocktailIngredientRepository
+                .findById(id).get();
+        cocktailIngredient.setIngredient(ingredient);
+        cocktailIngredient.setMeasure(measure);
+        cocktailIngredientRepository.save(cocktailIngredient);
+    }
+
 }

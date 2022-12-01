@@ -1,6 +1,7 @@
 package com.example.cocktail.domain;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -13,6 +14,8 @@ import java.util.Objects;
 @Getter
 @org.hibernate.annotations.Immutable
 public class CocktailIngredient {
+    @Getter
+    @AllArgsConstructor
     @Embeddable
     public static class Id implements Serializable {
         @Column(name = "COCKTAIL_ID")
@@ -20,16 +23,14 @@ public class CocktailIngredient {
         @Column(name = "INGREDIENT_ID")
         private Long ingredientId;
 
-        public Id(){}
+        @Column(name = "INGREDIENT_NO")
+        private Long ingredientNo;
 
-        public Id(Long cocktailId, Long ingredientId) {
-            this.cocktailId = cocktailId;
-            this.ingredientId = ingredientId;
-        }
+        public Id(){}
 
         @Override
         public int hashCode() {
-            return Objects.hash(cocktailId, ingredientId);
+            return Objects.hash(cocktailId, ingredientId, ingredientNo);
         }
 
         @Override
@@ -41,7 +42,7 @@ public class CocktailIngredient {
                 return false;
             }
             Id id = (Id) obj;
-            return cocktailId.equals(id.cocktailId) && ingredientId.equals(id.ingredientId);
+            return cocktailId.equals(id.cocktailId) && ingredientId.equals(id.ingredientId) && ingredientNo.equals(id.ingredientNo);
         }
     }
     @EmbeddedId
@@ -60,8 +61,7 @@ public class CocktailIngredient {
             insertable = false, updatable = false
     )
     private Ingredient ingredient;
-    String measure;
-    Long ingredientNo;
+    private String measure;
 
     public CocktailIngredient(Cocktail cocktail, Ingredient ingredient, String portion, Long ingredientNo) {
         this.cocktail = cocktail;
@@ -69,7 +69,7 @@ public class CocktailIngredient {
         this.id.cocktailId = cocktail.getId();
         this.id.ingredientId = ingredient.getId();
         this.measure = portion;
-        this.ingredientNo = ingredientNo;
+        this.id.ingredientNo = ingredientNo;
     }
 
     public void setIngredient(Ingredient ingredient) {

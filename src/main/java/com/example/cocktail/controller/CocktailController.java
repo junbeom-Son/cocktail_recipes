@@ -40,12 +40,12 @@ public class CocktailController {
     }
 
     @PostMapping("/edit/{cocktailID}")
-    public int editCocktail(@PathVariable Long cocktailID, CocktailDTO cocktailDTO) {
+    public int editCocktail(@PathVariable Long cocktailID, @RequestBody CocktailDTO cocktailDTO) {
         return cocktailService.update(cocktailID, cocktailDTO);
     }
 
     @PostMapping("/edit/multiple")
-    public int editCocktails(List<CocktailDTO> cocktailDTOs) {
+    public int editCocktails(@RequestBody List<CocktailDTO> cocktailDTOs) {
         return cocktailService.updateCocktails(cocktailDTOs);
     }
 }
