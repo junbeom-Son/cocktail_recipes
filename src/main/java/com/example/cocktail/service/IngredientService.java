@@ -8,8 +8,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class IngredientService {
 
-    @Autowired
-    IngredientRepository ingredientRepository;
+    private final IngredientRepository ingredientRepository;
+
+    public IngredientService(IngredientRepository ingredientRepository) {
+        this.ingredientRepository = ingredientRepository;
+    }
 
     public Ingredient findIngredientById(Long id) {
         return ingredientRepository.findById(id).orElse(null);

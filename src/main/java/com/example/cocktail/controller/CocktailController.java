@@ -14,8 +14,11 @@ import java.util.List;
 @RequestMapping("/cocktail")
 public class CocktailController {
 
-    @Autowired
-    CocktailService cocktailService;
+    private final CocktailService cocktailService;
+
+    public CocktailController(CocktailService cocktailService) {
+        this.cocktailService = cocktailService;
+    }
 
     private ObjectMapper objectMapper = new ObjectMapper();
 

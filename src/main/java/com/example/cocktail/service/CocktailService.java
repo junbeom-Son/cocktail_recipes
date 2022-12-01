@@ -18,14 +18,15 @@ public class CocktailService {
 
     private final int ONE = 1;
 
-    @Autowired
-    CocktailRepository cocktailRepository;
+    private final CocktailRepository cocktailRepository;
+    private final IngredientRepository ingredientRepository;
+    private final CocktailIngredientRepository cocktailIngredientRepository;
 
-    @Autowired
-    IngredientRepository ingredientRepository;
-
-    @Autowired
-    CocktailIngredientRepository cocktailIngredientRepository;
+    public CocktailService(CocktailRepository cocktailRepository, IngredientRepository ingredientRepository, CocktailIngredientRepository cocktailIngredientRepository) {
+        this.cocktailRepository = cocktailRepository;
+        this.ingredientRepository = ingredientRepository;
+        this.cocktailIngredientRepository = cocktailIngredientRepository;
+    }
 
     /**
      * CocktailDTO를 입력받아, 칵테일과, 재료, 재료 수량을 각각 저장하는 메서드
