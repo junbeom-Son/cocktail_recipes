@@ -21,18 +21,12 @@ public class CocktailController {
 
     @PostMapping("/save")
     public int cocktailSave(@RequestBody CocktailDTO cocktailDTO) {
-        cocktailService.save(cocktailDTO);
-        return 1;
+        return cocktailService.save(cocktailDTO);
     }
 
     @PostMapping("/save/multiple")
-    public long cocktailSaveMultiple(@RequestBody List<CocktailDTO> cocktailDTOs) {
-        long count = 0;
-        for (CocktailDTO cocktailDTO : cocktailDTOs) {
-            cocktailService.save(cocktailDTO);
-            count++;
-        }
-        return count;
+    public int cocktailSaveMultiple(@RequestBody List<CocktailDTO> cocktailDTOs) {
+        return cocktailService.saveCocktails(cocktailDTOs);
     }
 
     @GetMapping("/{cocktailID}")

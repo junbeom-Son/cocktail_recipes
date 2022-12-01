@@ -16,6 +16,8 @@ import java.util.*;
 @Service
 public class CocktailService {
 
+    private final int ONE = 1;
+
     @Autowired
     CocktailRepository cocktailRepository;
 
@@ -31,10 +33,20 @@ public class CocktailService {
      * @param cocktailDTO
      */
     @Transactional
-    public void save(CocktailDTO cocktailDTO) {
+    public int save(CocktailDTO cocktailDTO) {
         saveCocktail(cocktailDTO);
         saveIngredients(cocktailDTO);
         saveIngredientsMeasure(cocktailDTO);
+        return ONE;
+    }
+
+    @Transactional
+    public int saveCocktails(List<CocktailDTO> cocktailDTOs) {
+        int count = 0;
+        for (CocktailDTO cocktailDTO : cocktailDTOs) {
+            count += save(cocktailDTO);
+        }
+        return count;
     }
 
     /**
