@@ -12,7 +12,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @Table(name = "COCKTAIL_INGREDIENT")
 @Getter
-@org.hibernate.annotations.Immutable
+//@org.hibernate.annotations.Immutable
 public class CocktailIngredient {
     @Getter
     @AllArgsConstructor

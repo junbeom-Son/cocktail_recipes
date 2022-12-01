@@ -89,7 +89,7 @@ public class CocktailService {
         if (engName == null) {
             return;
         }
-        Ingredient ingredient = ingredientRepository.findByEngName(engName);
+        Ingredient ingredient = ingredientRepository.findByEngName(engName).orElse(null);
         if (ingredient == null) {
             ingredientRepository.save(new Ingredient(engName));
         }
@@ -127,7 +127,7 @@ public class CocktailService {
         if (ingredientEngName == null) {
             return;
         }
-        Ingredient ingredient = ingredientRepository.findByEngName(ingredientEngName);
+        Ingredient ingredient = ingredientRepository.findByEngName(ingredientEngName).orElse(null);
         CocktailIngredient cocktailIngredient = cocktailIngredientRepository
                 .findByCocktailAndIngredient(cocktail, ingredient);
         if (cocktailIngredient == null) {
@@ -244,7 +244,7 @@ public class CocktailService {
         if (ingredientEngName == null) {
             return;
         }
-        Ingredient tmp = ingredientRepository.findByEngName(ingredientEngName);
+        Ingredient tmp = ingredientRepository.findByEngName(ingredientEngName).orElse(null);
         Ingredient ingredient = ingredientRepository.findById(tmp.getId()).get();
         CocktailIngredient.Id id = new CocktailIngredient.Id(cocktail.getId(), ingredient.getId(), ingredientNo);
         CocktailIngredient cocktailIngredient = cocktailIngredientRepository
@@ -260,16 +260,4 @@ public class CocktailService {
             System.out.println("after measure edit" +savedMeasure.getMeasure());
         }
     }
-
-    private void no(CocktailDTO cocktailDTO, String ingredientEngName, String measure, Long ingredientNo) {
-        Cocktail cocktail = cocktailRepository.findById(cocktailDTO.getId()).get();
-        Ingredient ingredient = ingredientRepository.findByEngName(ingredientEngName);
-        CocktailIngredient.Id id = new CocktailIngredient.Id(cocktail.getId(), ingredient.getId(), ingredientNo);
-        CocktailIngredient cocktailIngredient = cocktailIngredientRepository
-                .findById(id).get();
-        cocktailIngredient.setIngredient(ingredient);
-        cocktailIngredient.setMeasure(measure);
-        cocktailIngredientRepository.save(cocktailIngredient);
-    }
-
 }
