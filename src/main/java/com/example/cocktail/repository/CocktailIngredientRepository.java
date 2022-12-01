@@ -7,4 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CocktailIngredientRepository extends JpaRepository<CocktailIngredient, CocktailIngredient.Id> {
     CocktailIngredient findByCocktailAndIngredient(Cocktail cocktail, Ingredient ingredient);
+
+    CocktailIngredient findCocktailIngredientByIngredientNo(Long ingredientNo);
 }

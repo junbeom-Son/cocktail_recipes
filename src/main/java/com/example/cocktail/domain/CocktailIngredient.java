@@ -71,4 +71,12 @@ public class CocktailIngredient {
         this.measure = portion;
         this.ingredientNo = ingredientNo;
     }
+
+    public void setIngredient(Ingredient ingredient) {
+        this.ingredient = ingredient;
+    }
+
+    public void setMeasure(String measure) {
+        this.measure = measure;
+    }
 }

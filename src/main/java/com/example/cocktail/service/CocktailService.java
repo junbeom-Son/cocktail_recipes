@@ -192,12 +192,15 @@ public class CocktailService {
         return measures;
     }
 
-    public int updateCocktail(Long cocktailID, CocktailDTO cocktailDTO) {
+    @Transactional
+    public int update(Long cocktailID, CocktailDTO cocktailDTO) {
         int count = 0;
         if (!cocktailRepository.existsById(cocktailID)) {
             return count;
         }
-        save(cocktailDTO);
+        updateCocktail(cocktailDTO);
+        saveIngredients(cocktailDTO);
+        updateIngredientsMeasure(cocktailDTO);
         count = 1;
         return count;
     }
@@ -206,8 +209,49 @@ public class CocktailService {
     public int updateCocktails(List<CocktailDTO> cocktailDTOs) {
         int count = 0;
         for (CocktailDTO cocktailDTO : cocktailDTOs) {
-            count += updateCocktail(cocktailDTO.getId(), cocktailDTO);
+            count += update(cocktailDTO.getId(), cocktailDTO);
         }
         return count;
+    }
+
+    private void updateCocktail(CocktailDTO cocktailDTO) {
+        Cocktail cocktail = cocktailRepository.findById(cocktailDTO.getId()).get();
+        cocktail.setKorName(cocktailDTO.getKorName());
+        cocktail.setEngName(cocktailDTO.getEngName());
+        cocktail.setGlass(cocktailDTO.getGlass());
+        cocktail.setCocktailDescription(cocktailDTO.getCocktailDescription());
+        cocktail.setAlcoholic(cocktailDTO.getAlcoholic());
+        cocktail.setImageSource(cocktailDTO.getImageSource());
+        cocktail.setImageAttribution(cocktailDTO.getImageAttribution());
+        cocktailRepository.save(cocktail);
+    }
+
+    private void updateIngredientsMeasure(CocktailDTO cocktailDTO) {
+        Cocktail cocktail = cocktailRepository.findById(cocktailDTO.getId()).get();
+        updateIngredientMeasure(cocktail, cocktailDTO.getIngredient1(), cocktailDTO.getMeasure1(), 1L);
+        updateIngredientMeasure(cocktail, cocktailDTO.getIngredient2(), cocktailDTO.getMeasure2(), 2L);
+        updateIngredientMeasure(cocktail, cocktailDTO.getIngredient3(), cocktailDTO.getMeasure3(), 3L);
+        updateIngredientMeasure(cocktail, cocktailDTO.getIngredient4(), cocktailDTO.getMeasure4(), 4L);
+        updateIngredientMeasure(cocktail, cocktailDTO.getIngredient5(), cocktailDTO.getMeasure5(), 5L);
+        updateIngredientMeasure(cocktail, cocktailDTO.getIngredient6(), cocktailDTO.getMeasure6(), 6L);
+        updateIngredientMeasure(cocktail, cocktailDTO.getIngredient7(), cocktailDTO.getMeasure7(), 7L);
+        updateIngredientMeasure(cocktail, cocktailDTO.getIngredient8(), cocktailDTO.getMeasure8(), 8L);
+        updateIngredientMeasure(cocktail, cocktailDTO.getIngredient9(), cocktailDTO.getMeasure9(), 9L);
+        updateIngredientMeasure(cocktail, cocktailDTO.getIngredient10(), cocktailDTO.getMeasure10(), 10L);
+    }
+
+    private void updateIngredientMeasure(Cocktail cocktail, String ingredientEngName, String measure, Long ingredientNo) {
+        if (ingredientEngName == null) {
+            return;
+        }
+        Ingredient ingredient = ingredientRepository.findByEngName(ingredientEngName);
+        CocktailIngredient cocktailIngredient = cocktailIngredientRepository
+                .findCocktailIngredientByIngredientNo(ingredientNo);
+        if (cocktailIngredient == null) {
+            cocktailIngredientRepository.save(new CocktailIngredient(cocktail, ingredient, measure, ingredientNo));
+        } else {
+            cocktailIngredient.setIngredient(ingredient);
+            cocktailIngredient.setMeasure(measure);
+        }
     }
 }

@@ -41,7 +41,7 @@ public class CocktailController {
 
     @PostMapping("/edit/{cocktailID}")
     public int editCocktail(@PathVariable Long cocktailID, CocktailDTO cocktailDTO) {
-        return cocktailService.updateCocktail(cocktailID, cocktailDTO);
+        return cocktailService.update(cocktailID, cocktailDTO);
     }
 
     @PostMapping("/edit/multiple")
