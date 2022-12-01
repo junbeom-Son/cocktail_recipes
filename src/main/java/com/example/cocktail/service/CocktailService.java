@@ -179,4 +179,23 @@ public class CocktailService {
         }
         return measures;
     }
+
+    public int updateCocktail(Long cocktailID, CocktailDTO cocktailDTO) {
+        int count = 0;
+        if (!cocktailRepository.existsById(cocktailID)) {
+            return count;
+        }
+        save(cocktailDTO);
+        count = 1;
+        return count;
+    }
+
+    @Transactional
+    public int updateCocktails(List<CocktailDTO> cocktailDTOs) {
+        int count = 0;
+        for (CocktailDTO cocktailDTO : cocktailDTOs) {
+            count += updateCocktail(cocktailDTO.getId(), cocktailDTO);
+        }
+        return count;
+    }
 }

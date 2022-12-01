@@ -44,4 +44,14 @@ public class CocktailController {
     public List<CocktailDTO> getCocktailDTOs() {
         return cocktailService.findAllCocktailDTOs();
     }
+
+    @PostMapping("/edit/{cocktailID}")
+    public int editCocktail(@PathVariable Long cocktailID, CocktailDTO cocktailDTO) {
+        return cocktailService.updateCocktail(cocktailID, cocktailDTO);
+    }
+
+    @PostMapping("/edit/multiple")
+    public int editCocktails(List<CocktailDTO> cocktailDTOs) {
+        return cocktailService.updateCocktails(cocktailDTOs);
+    }
 }
