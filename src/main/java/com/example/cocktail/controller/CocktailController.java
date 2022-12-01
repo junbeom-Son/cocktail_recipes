@@ -20,17 +20,19 @@ public class CocktailController {
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @PostMapping("/save")
-    public String cocktailSave(@RequestBody CocktailDTO cocktailDTO) {
+    public int cocktailSave(@RequestBody CocktailDTO cocktailDTO) {
         cocktailService.save(cocktailDTO);
-        return "cocktailSave";
+        return 1;
     }
 
     @PostMapping("/save/multiple")
-    public String cocktailSaveMultiple(@RequestBody List<CocktailDTO> cocktailDTOs) {
+    public long cocktailSaveMultiple(@RequestBody List<CocktailDTO> cocktailDTOs) {
+        long count = 0;
         for (CocktailDTO cocktailDTO : cocktailDTOs) {
             cocktailService.save(cocktailDTO);
+            count++;
         }
-        return "cocktailSave";
+        return count;
     }
 
     @GetMapping("/{cocktailID}")
