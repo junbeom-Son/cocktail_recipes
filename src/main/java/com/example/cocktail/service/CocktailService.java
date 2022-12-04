@@ -16,6 +16,7 @@ import java.util.*;
 @Service
 public class CocktailService {
 
+    private final int ZERO = 0;
     private final int ONE = 1;
 
     private final CocktailRepository cocktailRepository;
@@ -260,5 +261,13 @@ public class CocktailService {
             CocktailIngredient savedMeasure = cocktailIngredientRepository.saveAndFlush(cocktailIngredient);
             System.out.println("after measure edit" +savedMeasure.getMeasure());
         }
+    }
+
+    public int deleteCocktail(Long cocktailID) {
+        if (!cocktailRepository.existsById(cocktailID)) {
+            return ZERO;
+        }
+        cocktailRepository.deleteById(cocktailID);
+        return ONE;
     }
 }

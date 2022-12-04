@@ -51,4 +51,9 @@ public class CocktailController {
     public int editCocktails(@RequestBody List<CocktailDTO> cocktailDTOs) {
         return cocktailService.updateCocktails(cocktailDTOs);
     }
+
+    @PostMapping("/delete/{cocktailID}")
+    public int deleteCocktail(@PathVariable Long cocktailID) {
+        return cocktailService.deleteCocktail(cocktailID);
+    }
 }

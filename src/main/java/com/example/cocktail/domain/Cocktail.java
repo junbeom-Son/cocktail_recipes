@@ -1,9 +1,6 @@
 package com.example.cocktail.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -32,7 +29,10 @@ public class Cocktail {
     private LocalDateTime createdAt;
     @LastModifiedDate
     private LocalDateTime lastModified;
-    @OneToMany(mappedBy = "cocktail")
+    @OneToMany(
+            mappedBy = "cocktail",
+            cascade = CascadeType.REMOVE
+    )
     private Set<CocktailIngredient> cocktailIngredients = new HashSet<>();
 
     public Cocktail(Long id, String korName, String engName, String glass, String cocktailDescription,
