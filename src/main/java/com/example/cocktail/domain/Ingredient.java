@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -16,6 +17,20 @@ public class Ingredient {
     Long id;
     String korName;
     String engName;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Ingredient that = (Ingredient) o;
+        return engName.equals(that.engName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(engName);
+    }
+
     @Column(length = 2000)
     String ingredientDescription;
 
