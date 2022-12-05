@@ -68,7 +68,7 @@ public class CocktailTest {
         Long cocktailId = 12782L;
         Cocktail cocktail = cocktailService.findCocktailById(cocktailId);
         Assertions.assertThat(cocktail.getEngName()).isEqualTo("Thai Coffee");
-        Set<CocktailIngredient> cocktailIngredients = cocktail.getCocktailIngredients();
+        List<CocktailIngredient> cocktailIngredients = cocktail.getCocktailIngredients();
         for (CocktailIngredient cocktailIngredient : cocktailIngredients) {
             Ingredient ingredient = cocktailIngredient.getIngredient();
             System.out.println(ingredient.getEngName());
