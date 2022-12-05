@@ -24,7 +24,6 @@ public class Cocktail {
     String alcoholic;
     String imageSource;
     String imageAttribution;
-    Boolean modified;
     @CreationTimestamp
     private LocalDateTime createdAt;
     @LastModifiedDate
@@ -45,7 +44,6 @@ public class Cocktail {
         this.alcoholic = alcoholic;
         this.imageSource = imageSource;
         this.imageAttribution = imageAttribution;
-        this.modified = false;
     }
 
     public void setKorName(String korName) {
@@ -74,5 +72,9 @@ public class Cocktail {
 
     public void setImageAttribution(String imageAttribution) {
         this.imageAttribution = imageAttribution;
+    }
+
+    public void addMeasure(CocktailIngredient cocktailIngredient) {
+        cocktailIngredients.add(cocktailIngredient);
     }
 }

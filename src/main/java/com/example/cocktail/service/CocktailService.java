@@ -135,7 +135,7 @@ public class CocktailService {
         CocktailIngredient cocktailIngredient = cocktailIngredientRepository
                 .findByCocktailAndIngredient(cocktail, ingredient);
         if (cocktailIngredient == null) {
-            cocktailIngredientRepository.save(new CocktailIngredient(cocktail, ingredient, measure, ingredientNo));
+            cocktail.addMeasure(new CocktailIngredient(cocktail, ingredient, measure, ingredientNo));
         }
     }
 
