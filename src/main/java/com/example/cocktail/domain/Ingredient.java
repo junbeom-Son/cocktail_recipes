@@ -18,19 +18,6 @@ public class Ingredient {
     String korName;
     String engName;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Ingredient that = (Ingredient) o;
-        return engName.equals(that.engName);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(engName);
-    }
-
     @Column(length = 2000)
     String ingredientDescription;
 
@@ -49,5 +36,18 @@ public class Ingredient {
         this.engName = engName;
         this.ingredientDescription = ingredientDescription;
         this.highLevelIngredient = highLevelIngredient;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Ingredient that = (Ingredient) o;
+        return id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
