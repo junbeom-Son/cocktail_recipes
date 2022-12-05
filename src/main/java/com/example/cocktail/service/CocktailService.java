@@ -7,11 +7,13 @@ import com.example.cocktail.dto.CocktailDTO;
 import com.example.cocktail.repository.CocktailIngredientRepository;
 import com.example.cocktail.repository.CocktailRepository;
 import com.example.cocktail.repository.IngredientRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class CocktailService {
@@ -176,7 +178,7 @@ public class CocktailService {
     private Map<String, String> extractIngredients(Cocktail cocktail) {
         String prefix = "ingredient";
         Map<String, String> ingredients = new HashMap<>();
-        Set<CocktailIngredient> cocktailIngredients = cocktail.getCocktailIngredients();
+        List<CocktailIngredient> cocktailIngredients = cocktail.getCocktailIngredients();
         for (CocktailIngredient cocktailIngredient : cocktailIngredients) {
             Ingredient ingredient = cocktailIngredient.getIngredient();
             ingredients.put(prefix + cocktailIngredient.getId().getIngredientNo(), ingredient.getEngName());
@@ -187,7 +189,7 @@ public class CocktailService {
     private Map<String, String> extractMeasures(Cocktail cocktail) {
         String prefix = "measure";
         Map<String, String> measures = new HashMap<>();
-        Set<CocktailIngredient> cocktailIngredients = cocktail.getCocktailIngredients();
+        List<CocktailIngredient> cocktailIngredients = cocktail.getCocktailIngredients();
         for (CocktailIngredient cocktailIngredient : cocktailIngredients) {
             measures.put(prefix + cocktailIngredient.getId().getIngredientNo(), cocktailIngredient.getMeasure());
         }

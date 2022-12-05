@@ -7,8 +7,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -31,9 +31,9 @@ public class Cocktail {
     private LocalDateTime lastModified;
     @OneToMany(
             mappedBy = "cocktail",
-            cascade = CascadeType.REMOVE
+            cascade = {CascadeType.REMOVE, CascadeType.PERSIST}
     )
-    private Set<CocktailIngredient> cocktailIngredients = new HashSet<>();
+    private List<CocktailIngredient> cocktailIngredients = new ArrayList<>();
 
     public Cocktail(Long id, String korName, String engName, String glass, String cocktailDescription,
                     String alcoholic, String imageSource, String imageAttribution) {
