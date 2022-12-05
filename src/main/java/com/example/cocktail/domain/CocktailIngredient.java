@@ -12,7 +12,6 @@ import java.util.Objects;
 @NoArgsConstructor
 @Table(name = "COCKTAIL_INGREDIENT")
 @Getter
-//@org.hibernate.annotations.Immutable
 public class CocktailIngredient {
     @Getter
     @AllArgsConstructor
@@ -63,12 +62,12 @@ public class CocktailIngredient {
     private Ingredient ingredient;
     private String measure;
 
-    public CocktailIngredient(Cocktail cocktail, Ingredient ingredient, String portion, Long ingredientNo) {
+    public CocktailIngredient(Cocktail cocktail, Ingredient ingredient, String measure, Long ingredientNo) {
         this.cocktail = cocktail;
         this.ingredient = ingredient;
         this.id.cocktailId = cocktail.getId();
         this.id.ingredientId = ingredient.getId();
-        this.measure = portion;
+        this.measure = measure;
         this.id.ingredientNo = ingredientNo;
     }
 
