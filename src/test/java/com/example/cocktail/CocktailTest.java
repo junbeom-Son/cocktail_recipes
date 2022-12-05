@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -28,6 +29,7 @@ public class CocktailTest {
 
     @Test
     public void createCocktailsAndIngredients() {
+        List<CocktailDTO> cocktailDTOs = new ArrayList<>();
         CocktailDTO margaritaDTO = new CocktailDTO(11007L, "마가리따", "Margarita",
                 "Alcoholic", "Cocktail glass", "마가리따에요.", "Tequila",
                 "Triple sec", "Lime juice", "Salt", null, null,
@@ -57,9 +59,10 @@ public class CocktailTest {
                 null,null, null, null,
                 "https://www.thecocktaildb.com/images/media/drink/kvvd4z1485621283.jpg", null);
 
-        cocktailService.save(margaritaDTO);
-        cocktailService.save(thaiCoffeeDTO);
-        cocktailService.save(zorroDTO);
+        cocktailDTOs.add(margaritaDTO);
+        cocktailDTOs.add(thaiCoffeeDTO);
+        cocktailDTOs.add(zorroDTO);
+        cocktailService.saveCocktails(cocktailDTOs);
     }
 
     @Transactional
