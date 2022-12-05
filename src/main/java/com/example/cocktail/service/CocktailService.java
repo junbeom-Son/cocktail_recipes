@@ -38,9 +38,13 @@ public class CocktailService {
      */
     @Transactional
     public int save(CocktailDTO cocktailDTO) {
-        saveCocktail(cocktailDTO);
+        Long cocktailID = cocktailDTO.getId();
+        if (cocktailRepository.existsById(cocktailID)) {
+            return ZERO;
+        }
+        Cocktail cocktail = saveCocktail(cocktailDTO);
         saveIngredients(cocktailDTO);
-        saveIngredientsMeasure(cocktailDTO);
+        saveIngredientsMeasure(cocktail, cocktailDTO);
         return ONE;
     }
 
@@ -55,16 +59,14 @@ public class CocktailService {
 
     /**
      * CocktailDTO에서 데이터를 추출해 존재하지 않는 칵테일을 저장하는 메서드
+     * saveCocktail을 호출하기 전, 같은 id의 칵테일이 없을 시 생성하는 메서드 이기때문에 별 다른 조회를 하지 않는다.
      * @param cocktailDTO
      */
-    private void saveCocktail(CocktailDTO cocktailDTO) {
-        Cocktail cocktail = cocktailRepository.findById(cocktailDTO.getId()).orElse(null);
-        if (cocktail == null) {
-            cocktailRepository.save(new Cocktail(cocktailDTO.getId(), cocktailDTO.getKorName(),
-                    cocktailDTO.getEngName(), cocktailDTO.getGlass(),
-                    cocktailDTO.getCocktailDescription(), cocktailDTO.getAlcoholic(),
-                    cocktailDTO.getImageSource(), cocktailDTO.getImageAttribution()));
-        }
+    private Cocktail saveCocktail(CocktailDTO cocktailDTO) {
+        return cocktailRepository.save(new Cocktail(cocktailDTO.getId(), cocktailDTO.getKorName(),
+                cocktailDTO.getEngName(), cocktailDTO.getGlass(),
+                cocktailDTO.getCocktailDescription(), cocktailDTO.getAlcoholic(),
+                cocktailDTO.getImageSource(), cocktailDTO.getImageAttribution()));
     }
 
     /**
@@ -105,8 +107,7 @@ public class CocktailService {
      * 각 재료별로 저장하기위해 각각의 재료를 가지고 저장한다.
      * @param cocktailDTO
      */
-    private void saveIngredientsMeasure(CocktailDTO cocktailDTO) {
-        Cocktail cocktail = cocktailRepository.findById(cocktailDTO.getId()).get();
+    private void saveIngredientsMeasure(Cocktail cocktail, CocktailDTO cocktailDTO) {
         saveIngredientMeasure(cocktail, cocktailDTO.getIngredient1(), cocktailDTO.getMeasure1(), 1L);
         saveIngredientMeasure(cocktail, cocktailDTO.getIngredient2(), cocktailDTO.getMeasure2(), 2L);
         saveIngredientMeasure(cocktail, cocktailDTO.getIngredient3(), cocktailDTO.getMeasure3(), 3L);
@@ -117,7 +118,6 @@ public class CocktailService {
         saveIngredientMeasure(cocktail, cocktailDTO.getIngredient8(), cocktailDTO.getMeasure8(), 8L);
         saveIngredientMeasure(cocktail, cocktailDTO.getIngredient9(), cocktailDTO.getMeasure9(), 9L);
         saveIngredientMeasure(cocktail, cocktailDTO.getIngredient10(), cocktailDTO.getMeasure10(), 10L);
-
     }
 
     /**
