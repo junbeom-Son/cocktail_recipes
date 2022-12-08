@@ -6,7 +6,9 @@ import com.example.cocktail.domain.Ingredient;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface CocktailIngredientRepository extends JpaRepository<CocktailIngredient, CocktailIngredient.Id> {
-    CocktailIngredient findByCocktailAndIngredient(Cocktail cocktail, Ingredient ingredient);
+    Optional<CocktailIngredient> findByCocktailAndIngredient(Cocktail cocktail, Ingredient ingredient);
 }
