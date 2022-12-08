@@ -43,6 +43,10 @@ public class CocktailIngredient {
             Id id = (Id) obj;
             return cocktailId.equals(id.cocktailId) && ingredientId.equals(id.ingredientId) && ingredientNo.equals(id.ingredientNo);
         }
+
+        public void setIngredientNo(Long ingredientNo) {
+            this.ingredientNo = ingredientNo;
+        }
     }
     @EmbeddedId
     private Id id = new Id();
@@ -70,11 +74,6 @@ public class CocktailIngredient {
         this.measure = measure;
         this.id.ingredientNo = ingredientNo;
     }
-
-    public void setIngredient(Ingredient ingredient) {
-        this.ingredient = ingredient;
-    }
-
     public void setMeasure(String measure) {
         this.measure = measure;
     }

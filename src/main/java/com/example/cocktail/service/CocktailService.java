@@ -133,9 +133,9 @@ public class CocktailService {
         }
         Ingredient ingredient = ingredientRepository.findByEngName(ingredientEngName).orElse(null);
         CocktailIngredient cocktailIngredient = cocktailIngredientRepository
-                .findByCocktailAndIngredient(cocktail, ingredient);
+                .findByCocktailAndIngredient(cocktail, ingredient).orElse(null);
         if (cocktailIngredient == null) {
-            cocktail.addMeasure(new CocktailIngredient(cocktail, ingredient, measure, ingredientNo));
+            cocktail.addIngredient(new CocktailIngredient(cocktail, ingredient, measure, ingredientNo));
         }
     }
 
@@ -196,17 +196,23 @@ public class CocktailService {
         return measures;
     }
 
+
+    /**
+     * cocktailID 를 기반으로 cocktail 을 검색하고, 존재하지 않는다면 update 대상이 아니기 때문에,
+     * update 를 수행해서는 안된다.
+     * @param cocktailID
+     * @param cocktailDTO
+     * @return updated = 1, not updated = 0
+     */
     @Transactional
     public int update(Long cocktailID, CocktailDTO cocktailDTO) {
-        int count = 0;
         if (!cocktailRepository.existsById(cocktailID)) {
-            return count;
+            return ZERO;
         }
         updateCocktail(cocktailDTO);
         saveIngredients(cocktailDTO);
         updateIngredientsMeasure(cocktailDTO);
-        count = 1;
-        return count;
+        return ONE;
     }
 
     @Transactional
@@ -242,27 +248,64 @@ public class CocktailService {
         updateIngredientMeasure(cocktail, cocktailDTO.getIngredient8(), cocktailDTO.getMeasure8(), 8L);
         updateIngredientMeasure(cocktail, cocktailDTO.getIngredient9(), cocktailDTO.getMeasure9(), 9L);
         updateIngredientMeasure(cocktail, cocktailDTO.getIngredient10(), cocktailDTO.getMeasure10(), 10L);
+        cocktailRepository.save(cocktail);
     }
 
+    /**
+     * update ingredient and measure
+     * 1. check if an ingredient is saved in given order
+     * 1-1. if cocktailIngredient is null(if no ingredient is saved in this order)
+     * 1-1-1. and if the given name of ingredient is null -> no work
+     * 1-1-2. else -> save the ingredient and measure if the given ingredient is saved in different order
+     * 1-2. if an ingredient is saved in the given order
+     * 1-2-1. check if the ingredient is same as the given ingredient
+     * 1-2-1-1. if the ingredient is same -> update measure if the given measure is not same as saved measure
+     * 1-2-1-2. if the ingredient is not same -> save the ingredient and measure if the given ingredient is saved in different order
+     * @param cocktail
+     * @param ingredientEngName
+     * @param measure
+     * @param ingredientNo
+     */
     private void updateIngredientMeasure(Cocktail cocktail, String ingredientEngName, String measure, Long ingredientNo) {
-        if (ingredientEngName == null) {
-            return;
-        }
-        Ingredient tmp = ingredientRepository.findByEngName(ingredientEngName).orElse(null);
-        Ingredient ingredient = ingredientRepository.findById(tmp.getId()).get();
-        CocktailIngredient.Id id = new CocktailIngredient.Id(cocktail.getId(), ingredient.getId(), ingredientNo);
         CocktailIngredient cocktailIngredient = cocktailIngredientRepository
-                .findById(id).get();
+                .findByCocktailAndIngredientNo(cocktail.getId(), ingredientNo).orElse(null);
         if (cocktailIngredient == null) {
-            System.out.println("null " + ingredientEngName);
-            cocktailIngredientRepository.save(new CocktailIngredient(cocktail, ingredient, measure, ingredientNo));
+            if (ingredientEngName == null) {
+                return;
+            }
+            saveIngredientIfNotExist(cocktail, ingredientEngName, measure, ingredientNo);
         } else {
-            System.out.println("before measure edit : " + cocktailIngredient.getMeasure());
-            cocktailIngredient.setIngredient(ingredient);
-            cocktailIngredient.setMeasure(measure);
-            CocktailIngredient savedMeasure = cocktailIngredientRepository.saveAndFlush(cocktailIngredient);
-            System.out.println("after measure edit" +savedMeasure.getMeasure());
+            Ingredient ingredient = ingredientRepository.findByEngName(ingredientEngName).get();
+            if (cocktailIngredient.getIngredient().getId() == ingredient.getId()) {
+                if (cocktailIngredient.getMeasure().equals(measure)) {
+                    return;
+                }
+                cocktailIngredient.setMeasure(measure);
+                cocktailIngredientRepository.save(cocktailIngredient);
+            } else {
+                cocktailIngredientRepository.delete(cocktailIngredient);
+                saveIngredientIfNotExist(cocktail, ingredientEngName, measure, ingredientNo);
+            }
         }
+    }
+
+    /**
+     * if the given ingredient is saved in different order, remove the ingredient and save new one
+     * call this method after ingredient and if ingredientEngName is not null,
+     * so findByEngName never returns null
+     * @param cocktail
+     * @param ingredientEngName
+     * @param measure
+     * @param ingredientNo
+     */
+    private void saveIngredientIfNotExist(Cocktail cocktail, String ingredientEngName, String measure, Long ingredientNo) {
+        Ingredient ingredient = ingredientRepository.findByEngName(ingredientEngName).get();
+        CocktailIngredient savedCocktailIngredient = cocktailIngredientRepository
+                .findByCocktailAndIngredient(cocktail, ingredient).orElse(null);
+        if (savedCocktailIngredient != null) {
+            cocktailIngredientRepository.delete(savedCocktailIngredient);
+        }
+        cocktailIngredientRepository.save(new CocktailIngredient(cocktail, ingredient, measure, ingredientNo));
     }
 
     public int deleteCocktail(Long cocktailID) {

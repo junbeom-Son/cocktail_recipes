@@ -74,7 +74,41 @@ public class Cocktail {
         this.imageAttribution = imageAttribution;
     }
 
-    public void addMeasure(CocktailIngredient cocktailIngredient) {
+    public void addIngredient(CocktailIngredient cocktailIngredient) {
         cocktailIngredients.add(cocktailIngredient);
+    }
+
+    /**
+     * ingredientNo 가 일치하는 재료를 반환한다.
+     * @param ingredientNo
+     * @return 있으면 존재하는 cocktailIngredient, 없다면 null return
+     * null 을 리턴할 수 있기 때문에 사용하는 쪽에서 주의해야한다.
+     */
+    public CocktailIngredient getIngredientByNo(Long ingredientNo) {
+        for (CocktailIngredient cocktailIngredient : cocktailIngredients) {
+            if (cocktailIngredient.getId().getIngredientNo() == ingredientNo) {
+                return cocktailIngredient;
+            }
+        }
+        return null;
+    }
+
+    public CocktailIngredient getIngredientById(Long ingredientId) {
+        for (CocktailIngredient cocktailIngredient : cocktailIngredients) {
+            if (cocktailIngredient.getId().getIngredientId() == ingredientId) {
+                return cocktailIngredient;
+            }
+        }
+        return null;
+    }
+
+    public void removeIngredient(CocktailIngredient duplicatedIngredient) {
+        Long ingredientNo = duplicatedIngredient.getId().getIngredientNo();
+        cocktailIngredients.remove(duplicatedIngredient);
+        for (CocktailIngredient cocktailIngredient : cocktailIngredients) {
+            if (cocktailIngredient.getId().getIngredientNo() > ingredientNo) {
+                cocktailIngredient.getId().setIngredientNo(cocktailIngredient.getId().getIngredientNo() - 1);
+            }
+        }
     }
 }
