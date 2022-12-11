@@ -46,7 +46,7 @@ public class CocktailService {
         Cocktail cocktail = saveCocktailInfo(cocktailDTO);
         CocktailVO cocktailVO = new CocktailVO(cocktailDTO);
         saveIngredients(cocktailVO);
-        saveIngredientsMeasure(cocktail, cocktailDTO);
+        saveIngredientsMeasure(cocktail, cocktailVO);
         return ONE;
     }
 
@@ -103,19 +103,15 @@ public class CocktailService {
      * 재료의 수량을 저장한다.
      * 앞서 cocktailDTO 로 전달된 id로 칵테일을 만들었으므로 항상 null 값을 리턴하지 않음을 보장한다.
      * 각 재료별로 저장하기위해 각각의 재료를 가지고 저장한다.
-     * @param cocktailDTO
+     * @param cocktail, cocktailVO
      */
-    private void saveIngredientsMeasure(Cocktail cocktail, CocktailDTO cocktailDTO) {
-        saveIngredientMeasure(cocktail, cocktailDTO.getIngredient1(), cocktailDTO.getMeasure1(), 1L);
-        saveIngredientMeasure(cocktail, cocktailDTO.getIngredient2(), cocktailDTO.getMeasure2(), 2L);
-        saveIngredientMeasure(cocktail, cocktailDTO.getIngredient3(), cocktailDTO.getMeasure3(), 3L);
-        saveIngredientMeasure(cocktail, cocktailDTO.getIngredient4(), cocktailDTO.getMeasure4(), 4L);
-        saveIngredientMeasure(cocktail, cocktailDTO.getIngredient5(), cocktailDTO.getMeasure5(), 5L);
-        saveIngredientMeasure(cocktail, cocktailDTO.getIngredient6(), cocktailDTO.getMeasure6(), 6L);
-        saveIngredientMeasure(cocktail, cocktailDTO.getIngredient7(), cocktailDTO.getMeasure7(), 7L);
-        saveIngredientMeasure(cocktail, cocktailDTO.getIngredient8(), cocktailDTO.getMeasure8(), 8L);
-        saveIngredientMeasure(cocktail, cocktailDTO.getIngredient9(), cocktailDTO.getMeasure9(), 9L);
-        saveIngredientMeasure(cocktail, cocktailDTO.getIngredient10(), cocktailDTO.getMeasure10(), 10L);
+    private void saveIngredientsMeasure(Cocktail cocktail, CocktailVO cocktailVO) {
+        for (Long ingredientNo : cocktailVO.getIngredients().keySet()) {
+            for (String ingredient : cocktailVO.getIngredients().get(ingredientNo).keySet()) {
+                String measure = cocktailVO.getIngredients().get(ingredientNo).get(ingredient);
+                saveIngredientMeasure(cocktail, ingredient, measure, ingredientNo);
+            }
+        }
     }
 
     /**
