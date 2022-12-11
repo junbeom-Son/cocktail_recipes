@@ -7,6 +7,7 @@ import com.example.cocktail.dto.CocktailDTO;
 import com.example.cocktail.repository.CocktailIngredientRepository;
 import com.example.cocktail.repository.CocktailRepository;
 import com.example.cocktail.repository.IngredientRepository;
+import com.example.cocktail.vo.CocktailVO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,7 +44,8 @@ public class CocktailService {
             return ZERO;
         }
         Cocktail cocktail = saveCocktailInfo(cocktailDTO);
-        saveIngredients(cocktailDTO);
+        CocktailVO cocktailVO = new CocktailVO(cocktailDTO);
+        saveIngredients(cocktailVO);
         saveIngredientsMeasure(cocktail, cocktailDTO);
         return ONE;
     }
@@ -71,19 +73,12 @@ public class CocktailService {
 
     /**
      * 칵테일의 재료들을 저장하는 메서드, 각각의 재료를 저장하기 위해 하나의 재료를 저장하는 메소드를 호출
-     * @param cocktailDTO
+     * @param cocktailVO
      */
-    private void saveIngredients(CocktailDTO cocktailDTO) {
-        saveIngredient(cocktailDTO.getIngredient1());
-        saveIngredient(cocktailDTO.getIngredient2());
-        saveIngredient(cocktailDTO.getIngredient3());
-        saveIngredient(cocktailDTO.getIngredient4());
-        saveIngredient(cocktailDTO.getIngredient5());
-        saveIngredient(cocktailDTO.getIngredient6());
-        saveIngredient(cocktailDTO.getIngredient7());
-        saveIngredient(cocktailDTO.getIngredient8());
-        saveIngredient(cocktailDTO.getIngredient9());
-        saveIngredient(cocktailDTO.getIngredient10());
+    private void saveIngredients(CocktailVO cocktailVO) {
+        for (String ingredient : cocktailVO.getIngredients().values()) {
+            saveIngredient(ingredient);
+        }
     }
 
     /**
