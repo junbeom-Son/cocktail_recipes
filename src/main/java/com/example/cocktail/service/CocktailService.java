@@ -73,11 +73,14 @@ public class CocktailService {
 
     /**
      * 칵테일의 재료들을 저장하는 메서드, 각각의 재료를 저장하기 위해 하나의 재료를 저장하는 메소드를 호출
+     * cocktailVO.getIngredients().values()는 항상 size 가 1인 Map 을 return 한다.
      * @param cocktailVO
      */
     private void saveIngredients(CocktailVO cocktailVO) {
-        for (String ingredient : cocktailVO.getIngredients().values()) {
-            saveIngredient(ingredient);
+        for (Map<String, String> ingredient : cocktailVO.getIngredients().values()) {
+            for (String engName : ingredient.keySet()) {
+                saveIngredient(engName);
+            }
         }
     }
 
@@ -205,7 +208,8 @@ public class CocktailService {
             return ZERO;
         }
         updateCocktail(cocktailDTO);
-        saveIngredients(cocktailDTO);
+        CocktailVO cocktailVO = new CocktailVO(cocktailDTO);
+        saveIngredients(cocktailVO);
         updateIngredientsMeasure(cocktailDTO);
         return ONE;
     }
