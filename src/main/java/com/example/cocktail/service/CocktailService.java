@@ -37,12 +37,12 @@ public class CocktailService {
      * @param cocktailDTO
      */
     @Transactional
-    public int save(CocktailDTO cocktailDTO) {
+    public int saveCocktail(CocktailDTO cocktailDTO) {
         Long cocktailID = cocktailDTO.getId();
         if (cocktailRepository.existsById(cocktailID)) {
             return ZERO;
         }
-        Cocktail cocktail = saveCocktail(cocktailDTO);
+        Cocktail cocktail = saveCocktailInfo(cocktailDTO);
         saveIngredients(cocktailDTO);
         saveIngredientsMeasure(cocktail, cocktailDTO);
         return ONE;
@@ -52,7 +52,7 @@ public class CocktailService {
     public int saveCocktails(List<CocktailDTO> cocktailDTOs) {
         int count = 0;
         for (CocktailDTO cocktailDTO : cocktailDTOs) {
-            count += save(cocktailDTO);
+            count += saveCocktail(cocktailDTO);
         }
         return count;
     }
@@ -62,7 +62,7 @@ public class CocktailService {
      * saveCocktail을 호출하기 전, 같은 id의 칵테일이 없을 시 생성하는 메서드 이기때문에 별 다른 조회를 하지 않는다.
      * @param cocktailDTO
      */
-    private Cocktail saveCocktail(CocktailDTO cocktailDTO) {
+    private Cocktail saveCocktailInfo(CocktailDTO cocktailDTO) {
         return cocktailRepository.save(new Cocktail(cocktailDTO.getId(), cocktailDTO.getKorName(),
                 cocktailDTO.getEngName(), cocktailDTO.getGlass(),
                 cocktailDTO.getCocktailDescription(), cocktailDTO.getAlcoholic(),

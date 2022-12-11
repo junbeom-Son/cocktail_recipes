@@ -23,7 +23,7 @@ public class CocktailController {
 
     @PostMapping("/save")
     public int cocktailSave(@RequestBody CocktailDTO cocktailDTO) {
-        return cocktailService.save(cocktailDTO);
+        return cocktailService.saveCocktail(cocktailDTO);
     }
 
     @PostMapping("/save/multiple")
