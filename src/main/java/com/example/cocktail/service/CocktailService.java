@@ -206,7 +206,7 @@ public class CocktailService {
         updateCocktail(cocktailDTO);
         CocktailVO cocktailVO = new CocktailVO(cocktailDTO);
         saveIngredients(cocktailVO);
-        updateIngredientsMeasure(cocktailDTO);
+        updateIngredientsMeasure(cocktailVO);
         return ONE;
     }
 
@@ -231,18 +231,14 @@ public class CocktailService {
         cocktailRepository.save(cocktail);
     }
 
-    private void updateIngredientsMeasure(CocktailDTO cocktailDTO) {
-        Cocktail cocktail = cocktailRepository.findById(cocktailDTO.getId()).get();
-        updateIngredientMeasure(cocktail, cocktailDTO.getIngredient1(), cocktailDTO.getMeasure1(), 1L);
-        updateIngredientMeasure(cocktail, cocktailDTO.getIngredient2(), cocktailDTO.getMeasure2(), 2L);
-        updateIngredientMeasure(cocktail, cocktailDTO.getIngredient3(), cocktailDTO.getMeasure3(), 3L);
-        updateIngredientMeasure(cocktail, cocktailDTO.getIngredient4(), cocktailDTO.getMeasure4(), 4L);
-        updateIngredientMeasure(cocktail, cocktailDTO.getIngredient5(), cocktailDTO.getMeasure5(), 5L);
-        updateIngredientMeasure(cocktail, cocktailDTO.getIngredient6(), cocktailDTO.getMeasure6(), 6L);
-        updateIngredientMeasure(cocktail, cocktailDTO.getIngredient7(), cocktailDTO.getMeasure7(), 7L);
-        updateIngredientMeasure(cocktail, cocktailDTO.getIngredient8(), cocktailDTO.getMeasure8(), 8L);
-        updateIngredientMeasure(cocktail, cocktailDTO.getIngredient9(), cocktailDTO.getMeasure9(), 9L);
-        updateIngredientMeasure(cocktail, cocktailDTO.getIngredient10(), cocktailDTO.getMeasure10(), 10L);
+    private void updateIngredientsMeasure(CocktailVO cocktailVO) {
+        Cocktail cocktail = cocktailRepository.findById(cocktailVO.getId()).get();
+        for (Long ingredientNo : cocktailVO.getIngredients().keySet()) {
+            for (String ingredient : cocktailVO.getIngredients().get(ingredientNo).keySet()) {
+                String measure = cocktailVO.getIngredients().get(ingredientNo).get(ingredient);
+                updateIngredientMeasure(cocktail, ingredient, measure, ingredientNo);
+            }
+        }
         cocktailRepository.save(cocktail);
     }
 
@@ -272,7 +268,12 @@ public class CocktailService {
         } else {
             Ingredient ingredient = ingredientRepository.findByEngName(ingredientEngName).get();
             if (cocktailIngredient.getIngredient().getId() == ingredient.getId()) {
-                if (cocktailIngredient.getMeasure().equals(measure)) {
+                if (cocktailIngredient.getMeasure() == null) {
+                    if (measure == null) {
+                        return;
+                    }
+                }
+                else if (cocktailIngredient.getMeasure().equals(measure)) {
                     return;
                 }
                 cocktailIngredient.setMeasure(measure);
