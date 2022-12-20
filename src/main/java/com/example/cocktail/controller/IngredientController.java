@@ -30,7 +30,7 @@ public class IngredientController {
         return ingredientService.findIngredientById(ingredientID);
     }
 
-    @PostMapping("/{ingredientID}")
+    @PostMapping("/edit/{ingredientID}")
     public Ingredient editIngredient(@PathVariable Long ingredientID, @RequestBody Ingredient ingredient) {
         return ingredientService.update(ingredientID, ingredient);
     }
