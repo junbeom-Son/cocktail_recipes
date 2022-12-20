@@ -34,4 +34,9 @@ public class IngredientController {
     public Ingredient editIngredient(@PathVariable Long ingredientID, @RequestBody Ingredient ingredient) {
         return ingredientService.update(ingredientID, ingredient);
     }
+
+    @PostMapping("/delete/{ingredientID}")
+    public void deleteIngredient(@PathVariable Long ingredientID) {
+        ingredientService.deleteById(ingredientID);
+    }
 }

@@ -30,4 +30,10 @@ public class IngredientService {
         }
         return ingredientRepository.save(ingredient);
     }
+
+    public void deleteById(Long ingredientID) {
+        if (ingredientRepository.existsById(ingredientID)) {
+            ingredientRepository.deleteById(ingredientID);
+        }
+    }
 }
