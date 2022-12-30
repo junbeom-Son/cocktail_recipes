@@ -32,7 +32,7 @@ public class IngredientController {
      * or return null
      */
     @GetMapping("/{ingredientID}")
-    public Ingredient findIngredientById(@PathVariable Long ingredientID) {
+    public IngredientDTO findIngredientById(@PathVariable Long ingredientID) {
         return ingredientService.findIngredientById(ingredientID);
     }
 

@@ -29,8 +29,12 @@ public class IngredientService {
                 savedIngredient.getHighLevelIngredient().getEngName());
     }
 
-    public Ingredient findIngredientById(Long id) {
-        return ingredientRepository.findById(id).orElse(null);
+    public IngredientDTO findIngredientById(Long id) {
+        if (!ingredientRepository.existsById(id)) {
+            return null;
+        }
+        Ingredient ingredient = ingredientRepository.findById(id).get();
+        return convertIngredientToIngredientDTO(ingredient);
     }
 
     @Transactional
