@@ -1,6 +1,7 @@
 package com.example.cocktail.controller;
 
 import com.example.cocktail.domain.Ingredient;
+import com.example.cocktail.dto.IngredientDTO;
 import com.example.cocktail.service.IngredientService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +20,10 @@ public class IngredientController {
         this.ingredientService = ingredientService;
     }
 
+    @PostMapping("/save")
+    public IngredientDTO saveIngredient(@RequestBody IngredientDTO ingredientDTO) {
+        return ingredientService.saveIngredient(ingredientDTO);
+    }
     /**
      * find ingredient by id
      * @param ingredientID

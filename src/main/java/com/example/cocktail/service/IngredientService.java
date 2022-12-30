@@ -1,6 +1,7 @@
 package com.example.cocktail.service;
 
 import com.example.cocktail.domain.Ingredient;
+import com.example.cocktail.dto.IngredientDTO;
 import com.example.cocktail.repository.IngredientRepository;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,15 @@ public class IngredientService {
 
     public IngredientService(IngredientRepository ingredientRepository) {
         this.ingredientRepository = ingredientRepository;
+    }
+
+    public IngredientDTO saveIngredient(IngredientDTO ingredientDTO) {
+        Ingredient highLevelIngredient = ingredientRepository
+                .findByEngName(ingredientDTO.getIngredientType()).orElse(null);
+        Ingredient savedIngredient = ingredientRepository.save(new Ingredient(
+                ingredientDTO.getKorName(), ingredientDTO.getEngName(),
+                ingredientDTO.getIngredientDescription(), highLevelIngredient));
+        return null;
     }
 
     public Ingredient findIngredientById(Long id) {

@@ -1,5 +1,8 @@
 package com.example.cocktail.dto;
 
+import lombok.Getter;
+
+@Getter
 public class IngredientDTO {
     String korName;
     String engName;
