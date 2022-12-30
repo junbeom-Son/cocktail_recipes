@@ -19,7 +19,8 @@ public class IngredientService {
                 .findByEngName(ingredientDTO.getIngredientType()).orElse(null);
         Ingredient savedIngredient = ingredientRepository.save(new Ingredient(
                 ingredientDTO.getKorName(), ingredientDTO.getEngName(),
-                ingredientDTO.getIngredientDescription(), highLevelIngredient));
+                ingredientDTO.getIngredientDescription(), highLevelIngredient,
+                ingredientDTO.getImageSource()));
         return null;
     }
 

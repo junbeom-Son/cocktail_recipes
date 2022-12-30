@@ -24,6 +24,8 @@ public class Ingredient {
     @ManyToOne(fetch = FetchType.LAZY)
     Ingredient highLevelIngredient;
 
+    String imageSource;
+
     @OneToMany(mappedBy = "ingredient")
     private Set<CocktailIngredient> cocktailIngredients = new HashSet<>();
 
@@ -31,11 +33,13 @@ public class Ingredient {
         this.engName = engName;
     }
 
-    public Ingredient(String korName, String engName, String ingredientDescription, Ingredient highLevelIngredient) {
+    public Ingredient(String korName, String engName, String ingredientDescription, Ingredient highLevelIngredient,
+                      String imageSource) {
         this.korName = korName;
         this.engName = engName;
         this.ingredientDescription = ingredientDescription;
         this.highLevelIngredient = highLevelIngredient;
+        this.imageSource = imageSource;
     }
 
     @Override
