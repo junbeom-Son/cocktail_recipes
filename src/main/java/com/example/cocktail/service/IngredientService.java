@@ -3,7 +3,10 @@ package com.example.cocktail.service;
 import com.example.cocktail.domain.Ingredient;
 import com.example.cocktail.dto.IngredientDTO;
 import com.example.cocktail.repository.IngredientRepository;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class IngredientService {
@@ -28,6 +31,27 @@ public class IngredientService {
 
     public Ingredient findIngredientById(Long id) {
         return ingredientRepository.findById(id).orElse(null);
+    }
+
+    @Transactional
+    public List<IngredientDTO> findAllIngredientDTOs() {
+        List<Ingredient> ingredients = ingredientRepository.findAll();
+        List<IngredientDTO> ingredientDTOs = new ArrayList<>();
+        for (Ingredient ingredient : ingredients) {
+            ingredientDTOs.add(convertIngredientToIngredientDTO(ingredient));
+        }
+        return ingredientDTOs;
+    }
+
+    private IngredientDTO convertIngredientToIngredientDTO(Ingredient ingredient) {
+        if (ingredient.getHighLevelIngredient() == null) {
+            return new IngredientDTO(ingredient.getId(), ingredient.getKorName(), ingredient.getEngName(),
+                    ingredient.getIngredientDescription(), ingredient.getImageSource(),
+                    null);
+        }
+        return new IngredientDTO(ingredient.getId(), ingredient.getKorName(), ingredient.getEngName(),
+                ingredient.getIngredientDescription(), ingredient.getImageSource(),
+                ingredient.getHighLevelIngredient().getEngName());
     }
 
     /**

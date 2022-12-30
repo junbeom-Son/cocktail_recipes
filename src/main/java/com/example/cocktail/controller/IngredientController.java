@@ -3,6 +3,7 @@ package com.example.cocktail.controller;
 import com.example.cocktail.domain.Ingredient;
 import com.example.cocktail.dto.IngredientDTO;
 import com.example.cocktail.service.IngredientService;
+import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,6 +34,11 @@ public class IngredientController {
     @GetMapping("/{ingredientID}")
     public Ingredient findIngredientById(@PathVariable Long ingredientID) {
         return ingredientService.findIngredientById(ingredientID);
+    }
+
+    @GetMapping
+    public List<IngredientDTO> findAllIngredientDTOs() {
+        return ingredientService.findAllIngredientDTOs();
     }
 
     @PostMapping("/edit/{ingredientID}")
