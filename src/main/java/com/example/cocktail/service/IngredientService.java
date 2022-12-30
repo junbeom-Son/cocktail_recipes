@@ -21,7 +21,9 @@ public class IngredientService {
                 ingredientDTO.getKorName(), ingredientDTO.getEngName(),
                 ingredientDTO.getIngredientDescription(), highLevelIngredient,
                 ingredientDTO.getImageSource()));
-        return null;
+        return new IngredientDTO(savedIngredient.getId(), savedIngredient.getKorName(), savedIngredient.getEngName(),
+                savedIngredient.getIngredientDescription(), savedIngredient.getImageSource(),
+                savedIngredient.getHighLevelIngredient().getEngName());
     }
 
     public Ingredient findIngredientById(Long id) {

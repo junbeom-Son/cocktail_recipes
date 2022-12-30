@@ -4,14 +4,16 @@ import lombok.Getter;
 
 @Getter
 public class IngredientDTO {
+    Long id;
     String korName;
     String engName;
     String ingredientDescription;
     String imageSource;
     String ingredientType;
 
-    public IngredientDTO(String korName, String engName, String ingredientDescription, String imageSource,
+    public IngredientDTO(Long id, String korName, String engName, String ingredientDescription, String imageSource,
                          String ingredientType) {
+        this.id = id;
         this.korName = korName;
         this.engName = engName;
         this.ingredientDescription = ingredientDescription;
