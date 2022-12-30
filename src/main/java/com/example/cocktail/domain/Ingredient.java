@@ -42,6 +42,26 @@ public class Ingredient {
         this.imageSource = imageSource;
     }
 
+    public void setKorName(String korName) {
+        this.korName = korName;
+    }
+
+    public void setEngName(String engName) {
+        this.engName = engName;
+    }
+
+    public void setIngredientDescription(String ingredientDescription) {
+        this.ingredientDescription = ingredientDescription;
+    }
+
+    public void setHighLevelIngredient(Ingredient highLevelIngredient) {
+        this.highLevelIngredient = highLevelIngredient;
+    }
+
+    public void setImageSource(String imageSource) {
+        this.imageSource = imageSource;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -57,15 +57,28 @@ public class IngredientService {
     /**
      * update ingredient
      * @param ingredientID
-     * @param ingredient
+     * @param ingredientDTO
      * @return updated ingredient if it's an existing ingredient
      * if it doesn't exist, return null
      */
-    public Ingredient update(Long ingredientID, Ingredient ingredient) {
+    public IngredientDTO update(Long ingredientID, IngredientDTO ingredientDTO) {
         if (!ingredientRepository.existsById(ingredientID)) {
             return null;
         }
-        return ingredientRepository.save(ingredient);
+        Ingredient ingredient = ingredientRepository.findById(ingredientID).get();
+        ingredient.setKorName(ingredientDTO.getKorName());
+        ingredient.setEngName(ingredientDTO.getEngName());
+        ingredient.setIngredientDescription(ingredientDTO.getIngredientDescription());
+        ingredient.setImageSource(ingredientDTO.getImageSource());
+        if (ingredientDTO.getIngredientType() == null) {
+            ingredient.setHighLevelIngredient(null);
+        } else {
+            Ingredient highLevelIngredient = ingredientRepository.findByEngName(ingredientDTO.getIngredientType())
+                    .orElse(null);
+            ingredient.setHighLevelIngredient(highLevelIngredient);
+        }
+        ingredientRepository.save(ingredient);
+        return convertIngredientToIngredientDTO(ingredient);
     }
 
     public void deleteById(Long ingredientID) {

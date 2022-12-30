@@ -42,8 +42,8 @@ public class IngredientController {
     }
 
     @PostMapping("/edit/{ingredientID}")
-    public Ingredient editIngredient(@PathVariable Long ingredientID, @RequestBody Ingredient ingredient) {
-        return ingredientService.update(ingredientID, ingredient);
+    public IngredientDTO editIngredient(@PathVariable Long ingredientID, @RequestBody IngredientDTO ingredientDTO) {
+        return ingredientService.update(ingredientID, ingredientDTO);
     }
 
     @PostMapping("/delete/{ingredientID}")
