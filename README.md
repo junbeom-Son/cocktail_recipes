@@ -16,3 +16,5 @@
 # 사용된 기술
 * Spring Boot
 * Flutter(프론트엔드)
+* MySQL
+* AWS
